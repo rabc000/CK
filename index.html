@@ -1,15 +1,1227 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <title>Hello, Collective Knowledge!</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>墨问的网盘链接分享</title>
     <style>
-        /* 简单样式 */
+        :root {
+            --gold: #D4A843;
+            --gold-light: #F0D078;
+            --gold-dark: #A67B2E;
+            --gold-bright: #FFD700;
+            --silver: #C8C8D0;
+            --silver-light: #E8E8EE;
+            --silver-dark: #9A9AA5;
+            --purple: #7B5EA7;
+            --purple-light: #A78BFA;
+            --purple-dark: #4A3070;
+            --purple-deep: #2D1B4E;
+            --bg-deep: #1A0F2E;
+            --bg-card: rgba(30, 18, 50, 0.85);
+            --text-primary: #F0E6D8;
+            --text-secondary: #C8BFB0;
+            --shadow-gold: 0 0 30px rgba(212, 168, 67, 0.4);
+            --shadow-purple: 0 0 40px rgba(123, 94, 167, 0.35);
+            --border-gold: rgba(212, 168, 67, 0.5);
+            --border-silver: rgba(200, 200, 210, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: var(--bg-deep);
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'Noto Serif SC', 'STSong', serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 30px 20px 60px;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ==================== 多层背景 ==================== */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            background:
+                /* 深紫黑底色 */
+                radial-gradient(ellipse at 30% 15%, #3D1F6E 0%, transparent 55%),
+                radial-gradient(ellipse at 70% 10%, #6B3FA0 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 60%, #4A2080 0%, transparent 60%),
+                radial-gradient(ellipse at 15% 75%, #2D1550 0%, transparent 45%),
+                radial-gradient(ellipse at 85% 70%, #3B1A65 0%, transparent 50%),
+                /* 金色光晕 */
+                radial-gradient(ellipse at 50% 18%, rgba(240, 208, 120, 0.35) 0%, transparent 40%),
+                radial-gradient(ellipse at 35% 8%, rgba(255, 215, 0, 0.2) 0%, transparent 25%),
+                radial-gradient(ellipse at 65% 12%, rgba(240, 200, 100, 0.25) 0%, transparent 30%),
+                /* 银白光斑 */
+                radial-gradient(circle at 20% 30%, rgba(220, 220, 235, 0.12) 0%, transparent 18%),
+                radial-gradient(circle at 75% 40%, rgba(210, 210, 225, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 55% 55%, rgba(230, 230, 240, 0.08) 0%, transparent 15%),
+                radial-gradient(circle at 30% 65%, rgba(215, 215, 230, 0.1) 0%, transparent 17%),
+                /* 紫色光斑 */
+                radial-gradient(circle at 80% 25%, rgba(167, 139, 250, 0.15) 0%, transparent 22%),
+                radial-gradient(circle at 10% 50%, rgba(139, 92, 246, 0.12) 0%, transparent 20%),
+                /* 深色基底 */
+                #1A0F2E;
+            background-blend-mode: screen, screen, screen, screen, screen,
+                screen, screen, screen,
+                screen, screen, screen, screen,
+                screen, screen,
+                normal;
+        }
+
+        /* 星光粒子层 */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            pointer-events: none;
+            background:
+                radial-gradient(1.5px 1.5px at 12% 8%, rgba(255, 255, 240, 0.9) 0%, transparent 100%),
+                radial-gradient(1px 1px at 25% 18%, rgba(255, 240, 200, 0.8) 0%, transparent 100%),
+                radial-gradient(2px 2px at 38% 5%, rgba(255, 250, 220, 0.7) 0%, transparent 100%),
+                radial-gradient(1px 1px at 55% 12%, rgba(240, 220, 180, 0.75) 0%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 68% 7%, rgba(255, 255, 230, 0.8) 0%, transparent 100%),
+                radial-gradient(1px 1px at 78% 15%, rgba(255, 240, 190, 0.7) 0%, transparent 100%),
+                radial-gradient(2px 2px at 42% 22%, rgba(220, 200, 240, 0.75) 0%, transparent 100%),
+                radial-gradient(1px 1px at 15% 35%, rgba(255, 250, 210, 0.65) 0%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 60% 28%, rgba(240, 225, 200, 0.7) 0%, transparent 100%),
+                radial-gradient(1px 1px at 82% 32%, rgba(255, 245, 200, 0.6) 0%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 33% 42%, rgba(230, 210, 240, 0.65) 0%, transparent 100%),
+                radial-gradient(1px 1px at 70% 45%, rgba(255, 235, 180, 0.55) 0%, transparent 100%),
+                radial-gradient(2px 2px at 50% 38%, rgba(240, 220, 170, 0.6) 0%, transparent 100%),
+                radial-gradient(1px 1px at 8% 55%, rgba(255, 240, 200, 0.5) 0%, transparent 100%),
+                radial-gradient(1.5px 1.5px at 88% 50%, rgba(220, 200, 235, 0.55) 0%, transparent 100%);
+            animation: starTwinkle 6s ease-in-out infinite alternate;
+        }
+
+        @keyframes starTwinkle {
+            0% {
+                opacity: 0.7;
+            }
+            50% {
+                opacity: 0.95;
+            }
+            100% {
+                opacity: 0.65;
+            }
+        }
+
+        /* ==================== 凤凰SVG容器 ==================== */
+        .phoenix-bg-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            pointer-events: none;
+            width: 85vw;
+            max-width: 850px;
+            height: 85vh;
+            max-height: 900px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: phoenixFloat 12s ease-in-out infinite;
+        }
+
+        @keyframes phoenixFloat {
+            0%,
+            100% {
+                transform: translate(-50%, -50%) translateY(0px) rotate(0deg);
+            }
+            15% {
+                transform: translate(-50%, -50%) translateY(-18px) rotate(0.8deg);
+            }
+            30% {
+                transform: translate(-50%, -50%) translateY(-6px) rotate(-0.3deg);
+            }
+            45% {
+                transform: translate(-50%, -50%) translateY(-22px) rotate(1deg);
+            }
+            60% {
+                transform: translate(-50%, -50%) translateY(-10px) rotate(-0.6deg);
+            }
+            75% {
+                transform: translate(-50%, -50%) translateY(-20px) rotate(0.4deg);
+            }
+            90% {
+                transform: translate(-50%, -50%) translateY(-4px) rotate(-0.2deg);
+            }
+        }
+
+        .phoenix-svg {
+            width: 100%;
+            height: 100%;
+            opacity: 0.18;
+            filter: drop-shadow(0 0 50px rgba(240, 200, 100, 0.5)) drop-shadow(0 0 120px rgba(220, 160, 60, 0.35));
+            animation: phoenixGlow 5s ease-in-out infinite alternate;
+        }
+
+        @keyframes phoenixGlow {
+            0% {
+                opacity: 0.15;
+                filter: drop-shadow(0 0 40px rgba(240, 200, 100, 0.4)) drop-shadow(0 0 100px rgba(220, 160, 60, 0.3));
+            }
+            100% {
+                opacity: 0.22;
+                filter: drop-shadow(0 0 65px rgba(255, 215, 130, 0.6)) drop-shadow(0 0 150px rgba(240, 180, 70, 0.45));
+            }
+        }
+
+        /* ==================== 主容器 ==================== */
+        .main-container {
+            width: 100%;
+            max-width: 720px;
+            position: relative;
+            z-index: 1;
+            margin: 0 auto;
+        }
+
+        /* ==================== 顶部标题区域 ==================== */
+        .header-section {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .title-wrapper {
+            display: inline-block;
+            position: relative;
+            padding: 18px 50px 22px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 1.5px solid var(--border-gold);
+            box-shadow:
+                var(--shadow-gold),
+                var(--shadow-purple),
+                inset 0 1px 0 rgba(255, 215, 0, 0.15),
+                0 8px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            animation: titleShimmer 4s ease-in-out infinite;
+        }
+
+        @keyframes titleShimmer {
+            0%,
+            100% {
+                box-shadow: var(--shadow-gold), var(--shadow-purple), inset 0 1px 0 rgba(255, 215, 0, 0.15), 0 8px 40px rgba(0, 0, 0, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 50px rgba(240, 200, 100, 0.55), 0 0 60px rgba(167, 139, 250, 0.45), inset 0 1px 0 rgba(255, 225, 50, 0.25), 0 8px 45px rgba(0, 0, 0, 0.55);
+            }
+        }
+
+        .main-title {
+            font-size: 2.6em;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            background: linear-gradient(180deg,
+                    #F8E8A0 0%,
+                    #E8C860 18%,
+                    #D4A840 35%,
+                    #C89830 50%,
+                    #E0C055 65%,
+                    #F0D878 82%,
+                    #C89830 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: transparent;
+            text-shadow: none;
+            filter: drop-shadow(0 2px 6px rgba(200, 150, 50, 0.5));
+            position: relative;
+            display: inline-block;
+        }
+
+        /* 标题装饰光点 */
+        .title-wrapper::before {
+            content: '✦';
+            position: absolute;
+            top: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.2em;
+            color: #F0D078;
+            animation: sparkleTop 2.5s ease-in-out infinite;
+            text-shadow: 0 0 15px rgba(240, 208, 120, 0.8), 0 0 30px rgba(240, 200, 100, 0.5);
+        }
+
+        .title-wrapper::after {
+            content: '✦';
+            position: absolute;
+            bottom: -18px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1em;
+            color: #E8C860;
+            animation: sparkleBottom 3s ease-in-out infinite 0.8s;
+            text-shadow: 0 0 12px rgba(232, 200, 96, 0.7), 0 0 25px rgba(220, 180, 80, 0.4);
+        }
+
+        @keyframes sparkleTop {
+            0%,
+            100% {
+                opacity: 0.5;
+                transform: translateX(-50%) scale(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: translateX(-50%) scale(1.3);
+            }
+        }
+        @keyframes sparkleBottom {
+            0%,
+            100% {
+                opacity: 0.4;
+                transform: translateX(-50%) scale(0.7);
+            }
+            50% {
+                opacity: 0.95;
+                transform: translateX(-50%) scale(1.2);
+            }
+        }
+
+        .subtitle {
+            display: block;
+            margin-top: 8px;
+            font-size: 0.95em;
+            color: var(--silver-light);
+            letter-spacing: 0.1em;
+            opacity: 0.75;
+            font-weight: 300;
+        }
+
+        /* ==================== 内容卡片区 ==================== */
+        .content-card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 30px 32px 20px;
+            border: 1px solid var(--border-silver);
+            box-shadow:
+                0 10px 50px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(200, 200, 210, 0.08) inset,
+                0 0 80px rgba(120, 90, 160, 0.2);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            position: relative;
+            overflow: visible;
+        }
+
+        /* 卡片顶部装饰线 */
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 1px;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(240, 208, 120, 0.6),
+                    rgba(200, 200, 220, 0.4),
+                    rgba(240, 208, 120, 0.6),
+                    transparent);
+            border-radius: 50%;
+        }
+
+        /* ==================== 二级按钮（分类标题） ==================== */
+        .category-btn {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 16px 22px;
+            margin-bottom: 6px;
+            background: linear-gradient(135deg,
+                    rgba(45, 25, 70, 0.75) 0%,
+                    rgba(55, 35, 80, 0.7) 40%,
+                    rgba(40, 22, 60, 0.75) 100%);
+            border: 1.5px solid rgba(200, 170, 100, 0.35);
+            border-radius: 14px;
+            color: #E8D8B0;
+            font-size: 1.1em;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            font-family: inherit;
+        }
+
+        .category-btn:hover {
+            border-color: rgba(240, 200, 120, 0.65);
+            box-shadow:
+                0 4px 25px rgba(200, 150, 60, 0.3),
+                0 0 0 1px rgba(240, 200, 120, 0.15) inset;
+            color: #F5E5C0;
+            transform: translateY(-1px);
+        }
+
+        .category-btn:active {
+            transform: scale(0.985);
+            transition: all 0.1s ease;
+        }
+
+        /* 按钮光泽扫过效果 */
+        .category-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -80%;
+            width: 50%;
+            height: 200%;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 240, 0.06),
+                    rgba(255, 255, 240, 0.02),
+                    transparent);
+            transform: skewX(-25deg);
+            transition: left 0.7s ease;
+        }
+        .category-btn:hover::before {
+            left: 120%;
+        }
+
+        /* 左侧图标 */
+        .category-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(200, 150, 60, 0.3), rgba(180, 130, 40, 0.15));
+            border: 1px solid rgba(220, 180, 100, 0.4);
+            font-size: 1.1em;
+            flex-shrink: 0;
+            margin-right: 14px;
+            box-shadow: 0 0 15px rgba(200, 150, 50, 0.2);
+            transition: all 0.35s ease;
+        }
+        .category-btn:hover .category-icon {
+            box-shadow: 0 0 25px rgba(240, 190, 80, 0.4);
+            border-color: rgba(240, 200, 120, 0.6);
+        }
+
+        /* 按钮文字 */
+        .category-label {
+            flex: 1;
+            text-align: left;
+        }
+
+        /* 展开箭头 */
+        .category-arrow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            flex-shrink: 0;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.8em;
+            color: #C8B890;
+        }
+        .category-btn.expanded .category-arrow {
+            transform: rotate(180deg);
+            color: #F0D078;
+        }
+
+        /* ==================== 三级内容区（可折叠） ==================== */
+        .sub-items-wrapper {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                margin 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.4s ease;
+            opacity: 0;
+            margin: 0 8px;
+            border-radius: 0 0 12px 12px;
+        }
+
+        .sub-items-wrapper.open {
+            max-height: 600px;
+            /* 足够大，JS会动态设置精确值 */
+            opacity: 1;
+            margin: 2px 8px 10px;
+        }
+
+        .sub-items-inner {
+            padding: 10px 6px 6px;
+            background: rgba(25, 14, 42, 0.5);
+            border-radius: 0 0 12px 12px;
+            border-left: 2px solid rgba(200, 160, 80, 0.3);
+            border-right: 2px solid rgba(200, 160, 80, 0.15);
+            border-bottom: 2px solid rgba(200, 160, 80, 0.2);
+        }
+
+        /* ==================== 三级按钮（链接条目） ==================== */
+        .link-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            margin-bottom: 6px;
+            background: rgba(35, 22, 55, 0.6);
+            border: 1px solid rgba(180, 160, 200, 0.25);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .link-item:last-child {
+            margin-bottom: 0;
+        }
+        .link-item:hover {
+            border-color: rgba(200, 170, 220, 0.5);
+            background: rgba(40, 26, 60, 0.7);
+            box-shadow: 0 2px 15px rgba(150, 120, 200, 0.2);
+        }
+
+        /* 链接序号标记 */
+        .link-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(180, 140, 210, 0.2);
+            border: 1px solid rgba(180, 140, 210, 0.35);
+            font-size: 0.75em;
+            color: #C8B0D8;
+            flex-shrink: 0;
+            font-weight: 500;
+        }
+
+        /* 链接内容显示区 */
+        .link-content {
+            flex: 1;
+            min-width: 0;
+            padding: 8px 14px;
+            background: rgba(20, 10, 35, 0.55);
+            border-radius: 8px;
+            border: 1px dashed rgba(180, 150, 200, 0.35);
+            font-size: 0.9em;
+            color: #C8B8A0;
+            word-break: break-all;
+            cursor: default;
+            transition: all 0.3s ease;
+            letter-spacing: 0.02em;
+            position: relative;
+            font-family: 'SF Mono', 'Consolas', 'Monaco', 'PingFang SC', 'Microsoft YaHei', monospace;
+        }
+        .link-content:hover {
+            border-color: rgba(220, 190, 240, 0.55);
+            background: rgba(25, 14, 38, 0.65);
+        }
+        /* 占位提示样式 */
+        .link-content.placeholder-text {
+            color: #9A8AB0;
+            font-style: italic;
+            letter-spacing: 0.03em;
+        }
+
+        /* ==================== 复制按钮 ==================== */
+        .copy-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            padding: 8px 14px;
+            background: linear-gradient(135deg,
+                    rgba(180, 140, 200, 0.3),
+                    rgba(150, 110, 180, 0.2));
+            border: 1px solid rgba(200, 170, 220, 0.45);
+            border-radius: 8px;
+            color: #D8C8E8;
+            cursor: pointer;
+            font-size: 0.85em;
+            font-weight: 500;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+        .copy-btn:hover {
+            background: linear-gradient(135deg,
+                    rgba(200, 160, 225, 0.45),
+                    rgba(170, 130, 200, 0.35));
+            border-color: rgba(220, 190, 240, 0.7);
+            color: #F0E0F8;
+            box-shadow: 0 3px 18px rgba(160, 120, 200, 0.35);
+            transform: translateY(-1px);
+        }
+        .copy-btn:active {
+            transform: scale(0.93);
+            transition: all 0.08s ease;
+            background: rgba(220, 180, 240, 0.5);
+        }
+        /* 复制成功反馈 */
+        .copy-btn.copied {
+            background: rgba(100, 200, 130, 0.4) !important;
+            border-color: rgba(130, 220, 150, 0.7) !important;
+            color: #D0F5D8 !important;
+            box-shadow: 0 0 20px rgba(100, 200, 130, 0.4) !important;
+        }
+        .copy-icon {
+            font-size: 0.9em;
+            transition: transform 0.2s ease;
+        }
+        .copy-btn:hover .copy-icon {
+            transform: scale(1.15);
+        }
+
+        /* ==================== Toast提示 ==================== */
+        .toast-container {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            pointer-events: none;
+        }
+        .toast {
+            padding: 12px 28px;
+            background: rgba(30, 15, 45, 0.9);
+            border: 1px solid rgba(200, 170, 100, 0.5);
+            border-radius: 25px;
+            color: #F0E0C0;
+            font-size: 0.9em;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(200, 150, 50, 0.3);
+            animation: toastIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                toastOut 0.35s ease-in forwards;
+            animation-duration: 0.4s, 0.35s;
+            animation-delay: 0s, 1.6s;
+            animation-fill-mode: forwards;
+            white-space: nowrap;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            pointer-events: auto;
+        }
+        @keyframes toastIn {
+            0% {
+                opacity: 0;
+                transform: translateY(-25px) scale(0.85);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+        @keyframes toastOut {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.9);
+            }
+        }
+
+        /* ==================== 页脚 ==================== */
+        .footer-note {
+            text-align: center;
+            margin-top: 25px;
+            color: rgba(200, 180, 210, 0.55);
+            font-size: 0.8em;
+            letter-spacing: 0.05em;
+            font-weight: 300;
+        }
+
+        /* ==================== 响应式 ==================== */
+        @media (max-width: 600px) {
+            .main-title {
+                font-size: 1.7em;
+            }
+            .title-wrapper {
+                padding: 14px 24px 16px;
+                border-radius: 16px;
+            }
+            .content-card {
+                padding: 20px 14px 14px;
+                border-radius: 16px;
+            }
+            .category-btn {
+                padding: 13px 14px;
+                font-size: 0.95em;
+                border-radius: 10px;
+            }
+            .category-icon {
+                width: 30px;
+                height: 30px;
+                font-size: 0.9em;
+                margin-right: 10px;
+            }
+            .category-arrow {
+                width: 24px;
+                height: 24px;
+                font-size: 0.7em;
+            }
+            .link-item {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 10px 12px;
+            }
+            .link-content {
+                font-size: 0.8em;
+                padding: 7px 10px;
+                min-width: 100%;
+                order: 1;
+            }
+            .copy-btn {
+                order: 2;
+                font-size: 0.78em;
+                padding: 7px 12px;
+                border-radius: 7px;
+            }
+            .link-number {
+                width: 22px;
+                height: 22px;
+                font-size: 0.7em;
+            }
+            .sub-items-inner {
+                padding: 6px 3px 3px;
+            }
+            .phoenix-bg-container {
+                width: 95vw;
+                height: 70vh;
+            }
+            .phoenix-svg {
+                opacity: 0.1;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .main-title {
+                font-size: 1.4em;
+                letter-spacing: 0.03em;
+            }
+            .title-wrapper {
+                padding: 10px 16px 12px;
+            }
+            .category-btn {
+                font-size: 0.85em;
+                padding: 10px 10px;
+            }
+            .category-icon {
+                width: 26px;
+                height: 26px;
+                margin-right: 8px;
+            }
+            .copy-btn {
+                font-size: 0.72em;
+                padding: 6px 10px;
+            }
+        }
     </style>
 </head>
 <body>
-    <h1>Hello, Collective Knowledge!</h1>
-    <p>This is a simple "Hello World" page for the CK repository.</p>
-    <p>Collective Knowledge (CK) is an open-source framework to make research and development more collaborative and reproducible.</p>
+
+    <!-- ==================== 背景凤凰图案 ==================== -->
+    <div class="phoenix-bg-container" aria-hidden="true">
+        <svg class="phoenix-svg" viewBox="0 0 600 700" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <radialGradient id="phoenixGlowGrad" cx="50%" cy="40%" r="55%">
+                    <stop offset="0%" stop-color="#FFE8A0" stop-opacity="0.9" />
+                    <stop offset="40%" stop-color="#E8B850" stop-opacity="0.6" />
+                    <stop offset="100%" stop-color="#A07030" stop-opacity="0" />
+                </radialGradient>
+                <linearGradient id="wingGradL" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#F8D878" />
+                    <stop offset="50%" stop-color="#D4A840" />
+                    <stop offset="100%" stop-color="#B08028" />
+                </linearGradient>
+                <linearGradient id="wingGradR" x1="100%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#F8D878" />
+                    <stop offset="50%" stop-color="#D4A840" />
+                    <stop offset="100%" stop-color="#B08028" />
+                </linearGradient>
+                <linearGradient id="tailGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#E8C860" />
+                    <stop offset="60%" stop-color="#C89838" />
+                    <stop offset="100%" stop-color="#A07028" />
+                </linearGradient>
+                <filter id="phoenixBlur">
+                    <feGaussianBlur stdDeviation="1.5" />
+                </filter>
+                <filter id="phoenixSoftGlow">
+                    <feGaussianBlur stdDeviation="4" result="blur" />
+                    <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                </filter>
+            </defs>
+            <!-- 光晕背景 -->
+            <ellipse cx="300" cy="320" rx="220" ry="250" fill="url(#phoenixGlowGrad)" opacity="0.7" />
+            <!-- 凤凰主体 -->
+            <g filter="url(#phoenixSoftGlow)" opacity="0.85">
+                <!-- 左翼 -->
+                <path d="M290 280 C240 200, 120 160, 50 140 C80 180, 140 230, 180 270 C160 240, 100 200, 40 180 C90 230, 160 290, 220 330 C200 310, 150 290, 80 280 C130 320, 200 350, 260 360 Z"
+                fill="url(#wingGradL)" stroke="#C89830" stroke-width="1.5" opacity="0.9" />
+                <!-- 左翼羽毛细节 -->
+                <path d="M120 190 C100 175, 60 160, 30 155"
+                fill="none" stroke="#F0D060" stroke-width="1.2" opacity="0.7" />
+                <path d="M150 220 C130 200, 90 185, 50 178"
+                fill="none" stroke="#E8C850" stroke-width="1" opacity="0.6" />
+                <path d="M180 250 C160 230, 120 215, 70 208"
+                fill="none" stroke="#E0C040" stroke-width="0.9" opacity="0.5" />
+                <!-- 右翼 -->
+                <path d="M310 280 C360 200, 480 160, 550 140 C520 180, 460 230, 420 270 C440 240, 500 200, 560 180 C510 230, 440 290, 380 330 C400 310, 450 290, 520 280 C470 320, 400 350, 340 360 Z"
+                fill="url(#wingGradR)" stroke="#C89830" stroke-width="1.5" opacity="0.9" />
+                <!-- 右翼羽毛细节 -->
+                <path d="M480 190 C500 175, 540 160, 570 155"
+                fill="none" stroke="#F0D060" stroke-width="1.2" opacity="0.7" />
+                <path d="M450 220 C470 200, 510 185, 550 178"
+                fill="none" stroke="#E8C850" stroke-width="1" opacity="0.6" />
+                <path d="M420 250 C440 230, 480 215, 530 208"
+                fill="none" stroke="#E0C040" stroke-width="0.9" opacity="0.5" />
+                <!-- 身体 -->
+                <ellipse cx="300" cy="340" rx="38" ry="55" fill="#D4A840" stroke="#B88628" stroke-width="2" />
+                <ellipse cx="300" cy="335" rx="28" ry="40" fill="#E8C055" opacity="0.6" />
+                <!-- 颈部 -->
+                <path d="M295 300 C290 265, 298 235, 310 210"
+                fill="none" stroke="#D4A840" stroke-width="14" stroke-linecap="round" />
+                <path d="M295 300 C290 265, 298 235, 310 210"
+                fill="none" stroke="#E8C860" stroke-width="7" stroke-linecap="round" opacity="0.7" />
+                <!-- 头部 -->
+                <ellipse cx="312" cy="200" rx="20" ry="18" fill="#E0B850" stroke="#B88628" stroke-width="1.8" />
+                <ellipse cx="314" cy="197" rx="12" ry="11" fill="#F0D070" opacity="0.55" />
+                <!-- 眼睛 -->
+                <circle cx="320" cy="194" r="3.5" fill="#1A0F2E" />
+                <circle cx="321" cy="193" r="1.2" fill="#FFF8E0" />
+                <!-- 冠羽 -->
+                <path d="M305 188 C298 165, 290 145, 278 125"
+                fill="none" stroke="#E8C860" stroke-width="3" stroke-linecap="round" />
+                <path d="M308 186 C305 163, 302 140, 295 118"
+                fill="none" stroke="#F0D878" stroke-width="2.5" stroke-linecap="round" />
+                <path d="M312 185 C312 162, 314 138, 316 115"
+                fill="none" stroke="#D8B850" stroke-width="2.2" stroke-linecap="round" />
+                <circle cx="278" cy="123" r="5" fill="#F8E090" opacity="0.8" />
+                <circle cx="295" cy="116" r="4.5" fill="#F0D878" opacity="0.75" />
+                <circle cx="316" cy="113" r="4" fill="#E8C860" opacity="0.7" />
+                <!-- 喙 -->
+                <path d="M330 198 L348 192 L330 204 Z" fill="#C89030" stroke="#A07028" stroke-width="1" />
+                <!-- 尾羽 - 左 -->
+                <path d="M280 385 C240 430, 180 500, 130 580 C155 520, 200 470, 250 420"
+                fill="url(#tailGrad)" stroke="#B08030" stroke-width="1.5" opacity="0.85" />
+                <path d="M275 390 C225 445, 155 530, 95 620 C130 550, 185 490, 245 435"
+                fill="url(#tailGrad)" stroke="#B08030" stroke-width="1.2" opacity="0.7" />
+                <path d="M270 395 C210 460, 130 560, 60 650 C105 570, 170 500, 240 445"
+                fill="url(#tailGrad)" stroke="#B08030" stroke-width="1" opacity="0.55" />
+                <!-- 尾羽 - 右 -->
+                <path d="M320 385 C360 430, 420 500, 470 580 C445 520, 400 470, 350 420"
+                fill="url(#tailGrad)" stroke="#B08030" stroke-width="1.5" opacity="0.85" />
+                <path d="M325 390 C375 445, 445 530, 505 620 C470 550, 415 490, 355 435"
+                fill="url(#tailGrad)" stroke="#B08030" stroke-width="1.2" opacity="0.7" />
+                <path d="M330 395 C390 460, 470 560, 540 650 C495 570, 430 500, 360 445"
+                fill="url(#tailGrad)" stroke="#B08030" stroke-width="1" opacity="0.55" />
+                <!-- 尾羽装饰点 -->
+                <circle cx="130" cy="580" r="7" fill="#F8E090" opacity="0.7" />
+                <circle cx="95" cy="620" r="6" fill="#F0D878" opacity="0.6" />
+                <circle cx="60" cy="650" r="5" fill="#E8C860" opacity="0.5" />
+                <circle cx="470" cy="580" r="7" fill="#F8E090" opacity="0.7" />
+                <circle cx="505" cy="620" r="6" fill="#F0D878" opacity="0.6" />
+                <circle cx="540" cy="650" r="5" fill="#E8C860" opacity="0.5" />
+            </g>
+        </svg>
+    </div>
+
+    <!-- ==================== Toast提示容器 ==================== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ==================== 主内容区 ==================== -->
+    <div class="main-container">
+        <!-- 标题 -->
+        <div class="header-section">
+            <div class="title-wrapper">
+                <span class="main-title">墨问的网盘链接分享</span>
+                <span class="subtitle">— 学习资料 · 持续更新 —</span>
+            </div>
+        </div>
+
+        <!-- 内容卡片 -->
+        <div class="content-card">
+
+            <!--
+            ╔══════════════════════════════════════════════════╗
+            ║  📌 代码编辑提示（请在使用前阅读）：            ║
+            ║  1. 每个二级按钮下有若干三级链接条目           ║
+            ║  2. 三级条目中的链接文字是占位符               ║
+            ║  3. 请将 data-link 属性的值替换为真实网盘链接  ║
+            ║  4. 将链接显示文字替换为您的链接描述           ║
+            ║  5. 可自由增删三级链接条目                     ║
+            ║  6. 修改后保存并在浏览器中打开即可             ║
+            ╚══════════════════════════════════════════════════╝
+            -->
+
+            <!-- ========== 二级按钮 1 ========== -->
+            <!--
+            ★ 提示：修改 data-category-title 可更改二级按钮标题文字
+            ★ 下方三级条目中的 data-link 请替换为您的真实网盘链接
+            -->
+            <button class="category-btn" data-category="1" aria-expanded="false">
+                <span class="category-icon">📚</span>
+                <span class="category-label">标题 1 — AI小说提示词</span>
+                <span class="category-arrow">▼</span>
+            </button>
+            <div class="sub-items-wrapper" id="subWrapper1">
+                <div class="sub-items-inner">
+                    <!--
+                    ⚠️【请修改】三级链接条目示例
+                    将 data-link 的值替换为真实网盘链接
+                    将链接显示文字替换为您的链接描述
+                    -->
+                    <!-- 三级条目 1-1 -->
+                    <div class="link-item">
+                        <span class="link-number">①</span>
+                        <span class="link-content placeholder-text"
+                        data-link="https://pan.baidu.com/s/请替换为真实链接-示例1"
+                        title="点击复制按钮复制网盘链接">
+                        https://pan.baidu.com/s/1Li-X2TLOWHsjK72tJZ6u9w?pwd=1234 提取码: 1234
+                    </span>
+                    <button class="copy-btn" data-target data-copy-text="点击复制">
+                        <span class="copy-icon">📋</span> 复制链接
+                    </button>
+                </div>
+        <!--
+        ★ 如需添加更多三级条目，复制上面的 link-item div 即可
+        -->
+    </div>
+</div>
+
+<!-- ========== 二级按钮 2 ========== -->
+<button class="category-btn" data-category="2" aria-expanded="false">
+    <span class="category-icon">📝</span>
+    <span class="category-label">标题 2 — 证书考试资料</span>
+    <span class="category-arrow">▼</span>
+</button>
+<div class="sub-items-wrapper" id="subWrapper2">
+    <div class="sub-items-inner">
+        <!--
+        ⚠️【请修改】下方所有 data-link 为真实网盘链接
+        -->
+        <!-- 三级条目 2-1 -->
+        <div class="link-item">
+            <span class="link-number">①</span>
+            <span class="link-content placeholder-text"
+            data-link="https://pan.baidu.com/s/请替换为真实链接-示例4"
+            title="点击复制按钮复制网盘链接">
+            🔗 百度网盘 - 请在此处填写您的网盘链接描述（示例：CPA注册会计师全套资料）
+        </span>
+        <button class="copy-btn" data-target data-copy-text="点击复制">
+            <span class="copy-icon">📋</span> 复制链接
+        </button>
+    </div>
+</div>
+</div>
+
+<!-- ========== 二级按钮 3 ========== -->
+<button class="category-btn" data-category="3" aria-expanded="false">
+    <span class="category-icon">💼</span>
+    <span class="category-label">标题 3 — 职场技能资料</span>
+    <span class="category-arrow">▼</span>
+</button>
+<div class="sub-items-wrapper" id="subWrapper3">
+    <div class="sub-items-inner">
+        <!--
+        ⚠️【请修改】下方所有 data-link 为真实网盘链接
+        -->
+        <!-- 三级条目 3-1 -->
+        <div class="link-item">
+            <span class="link-number">①</span>
+            <span class="link-content placeholder-text"
+            data-link="https://pan.baidu.com/s/请替换为真实链接-示例6"
+            title="点击复制按钮复制网盘链接">
+            🔗 百度网盘 - 请在此处填写您的网盘链接描述（示例：Python从入门到精通视频）
+        </span>
+        <button class="copy-btn" data-target data-copy-text="点击复制">
+            <span class="copy-icon">📋</span> 复制链接
+        </button>
+    </div>
+</div>
+</div>
+
+</div><!-- /content-card -->
+
+<!-- 页脚 -->
+<p class="footer-note">✨ 点击分类标题展开 · 再次点击收起 · 点击复制按钮获取链接 ✨</p>
+</div><!-- /main-container -->
+
+<script>
+    (function() {
+        // ==================== DOM元素引用 ====================
+        const categoryBtns = document.querySelectorAll('.category-btn');
+        const subWrappers = document.querySelectorAll('.sub-items-wrapper');
+        const toastContainer = document.getElementById('toastContainer');
+        const allCopyBtns = document.querySelectorAll('.copy-btn[data-target]');
+
+        // ==================== 二级按钮：展开/收起 ====================
+        categoryBtns.forEach((btn) => {
+            btn.addEventListener('click', function() {
+                const category = this.getAttribute('data-category');
+                const targetWrapper = document.getElementById('subWrapper' +
+                    category);
+                if (!targetWrapper) return;
+
+                const isExpanded = this.classList.contains('expanded');
+
+                if (isExpanded) {
+                    // 收起
+                    this.classList.remove('expanded');
+                    this.setAttribute('aria-expanded', 'false');
+                    targetWrapper.classList.remove('open');
+                    // 设置max-height为0触发收起动画
+                    targetWrapper.style.maxHeight = '0px';
+                } else {
+                    // 展开：先关闭其他所有展开的面板（手风琴模式）
+                    categoryBtns.forEach((otherBtn) => {
+                        if (otherBtn !== btn && otherBtn.classList
+                            .contains('expanded')) {
+                            otherBtn.classList.remove('expanded');
+                            otherBtn.setAttribute('aria-expanded', 'false');
+                            const otherCat = otherBtn.getAttribute(
+                                'data-category');
+                            const otherWrapper = document.getElementById(
+                                'subWrapper' + otherCat);
+                            if (otherWrapper) {
+                                otherWrapper.classList.remove('open');
+                                otherWrapper.style.maxHeight = '0px';
+                            }
+                        }
+                    });
+
+                    // 展开当前
+                    this.classList.add('expanded');
+                    this.setAttribute('aria-expanded', 'true');
+                    targetWrapper.classList.add('open');
+                    // 动态计算内容高度
+                    const innerContent = targetWrapper.querySelector('.sub-items-inner');
+                    const actualHeight = innerContent ? innerContent.scrollHeight + 20 : targetWrapper
+                        .scrollHeight;
+                    targetWrapper.style.maxHeight = actualHeight + 'px';
+                }
+            });
+        });
+
+        // ==================== 复制按钮功能 ====================
+        function getLinkContentElement(copyBtn) {
+            // 在同一link-item中查找.link-content元素
+            const linkItem = copyBtn.closest('.link-item');
+            if (!linkItem) return null;
+            return linkItem.querySelector('.link-content');
+        }
+
+        function getLinkData(linkContentEl) {
+            if (!linkContentEl) return '';
+            // 优先从data-link属性获取（这是真实网盘链接）
+            const dataLink = linkContentEl.getAttribute('data-link');
+            if (dataLink && dataLink.trim() && !dataLink.includes('请替换为真实链接')) {
+                return dataLink.trim();
+            }
+            // 回退：使用显示的文本内容
+            return linkContentEl.textContent.trim();
+        }
+
+        async function copyToClipboard(text) {
+            // 优先使用现代Clipboard API
+            if (navigator.clipboard && window.isSecureContext) {
+                try {
+                    await navigator.clipboard.writeText(text);
+                    return true;
+                } catch (err) {
+                    // 静默失败，尝试回退方案
+                }
+            }
+            // 回退方案：使用textarea
+            try {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.left = '-9999px';
+                textarea.style.top = '-9999px';
+                textarea.style.opacity = '0';
+                textarea.style.pointerEvents = 'none';
+                textarea.setAttribute('readonly', '');
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select();
+                const success = document.execCommand('copy');
+                document.body.removeChild(textarea);
+                return success;
+            } catch (err) {
+                return false;
+            }
+        }
+
+        function showToast(message, isSuccess = true) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = isSuccess ? '✅ ' + message : '❌ ' + message;
+            toastContainer.appendChild(toast);
+
+            // 动画结束后移除元素
+            const totalDuration = 2000; // 与CSS动画总时长匹配
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, totalDuration + 100);
+        }
+
+        allCopyBtns.forEach((copyBtn) => {
+            copyBtn.addEventListener('click', async function(e) {
+                e.stopPropagation(); // 防止事件冒泡
+
+                const linkContentEl = getLinkContentElement(this);
+                if (!linkContentEl) {
+                    showToast('未找到链接内容，请检查页面结构', false);
+                    return;
+                }
+
+                const linkData = getLinkData(linkContentEl);
+
+                // 检查是否为占位符链接
+                if (linkData.includes('请替换为真实链接') || linkData.includes('请在此处填写')) {
+                    showToast('⚠️ 请先在代码中将此链接替换为真实网盘地址', false);
+                    // 仍然复制占位符文本，方便用户知道需要修改哪里
+                    await copyToClipboard(linkData);
+                    return;
+                }
+
+                if (!linkData || linkData.trim() === '') {
+                    showToast('链接内容为空，请检查', false);
+                    return;
+                }
+
+                // 执行复制
+                const success = await copyToClipboard(linkData);
+
+                if (success) {
+                    // 视觉反馈
+                    this.classList.add('copied');
+                    const iconSpan = this.querySelector('.copy-icon');
+                    const originalIcon = iconSpan ? iconSpan.textContent : '📋';
+                    if (iconSpan) {
+                        iconSpan.textContent = '✅';
+                    }
+                    const originalText = this.getAttribute('data-copy-text') || '点击复制';
+                    this.textContent = '';
+                    if (iconSpan) {
+                        this.appendChild(iconSpan);
+                        // 重新添加文字节点
+                        const textNode = document.createTextNode(' 已复制');
+                        this.appendChild(textNode);
+                    } else {
+                        this.textContent = '✅ 已复制';
+                    }
+
+                    showToast('链接已复制到剪贴板！');
+
+                    // 恢复按钮状态
+                    setTimeout(() => {
+                        this.classList.remove('copied');
+                        if (iconSpan) {
+                            iconSpan.textContent = originalIcon;
+                        }
+                        this.textContent = '';
+                        if (iconSpan) {
+                            this.appendChild(iconSpan);
+                        }
+                        const restoredText = document.createTextNode(' ' +
+                            originalText.replace('点击复制', '复制链接'));
+                        this.appendChild(restoredText);
+                    }, 1500);
+                } else {
+                    showToast('复制失败，请手动选择文字复制', false);
+                }
+            });
+        });
+
+        // ==================== 初始化：设置wrapper的过渡基准 ====================
+        subWrappers.forEach((wrapper) => {
+            wrapper.style.maxHeight = '0px';
+            wrapper.style.transition = 'max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease';
+        });
+
+        // ==================== 窗口大小变化时更新展开面板的高度 ====================
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                const expandedBtn = document.querySelector('.category-btn.expanded');
+                if (expandedBtn) {
+                    const category = expandedBtn.getAttribute('data-category');
+                    const targetWrapper = document.getElementById('subWrapper' + category);
+                    if (targetWrapper && targetWrapper.classList.contains('open')) {
+                        const innerContent = targetWrapper.querySelector('.sub-items-inner');
+                        const actualHeight = innerContent ? innerContent.scrollHeight +
+                            20 : targetWrapper.scrollHeight;
+                        targetWrapper.style.maxHeight = actualHeight + 'px';
+                    }
+                }
+            }, 300);
+        });
+
+        // ==================== 键盘支持（无障碍） ====================
+        categoryBtns.forEach((btn) => {
+            btn.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+
+        allCopyBtns.forEach((btn) => {
+            btn.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    this.click();
+                }
+            });
+        });
+
+        console.log('🦅✨ 墨问的网盘链接分享页面已就绪');
+        console.log('📌 提示：请在HTML代码中搜索"请替换为真实链接"来定位需要修改的网盘链接');
+        console.log('📌 每个三级链接条目的 data-link 属性中存放真实链接，显示文字为链接描述');
+        console.log('📌 修改完成后保存文件，在浏览器中刷新即可看到更新后的内容');
+        console.log('%c🌟 金色凤凰守护着您的知识分享 🌟', 'color: #F0D078; font-size: 1.2em;');
+    })();
+</script>
 </body>
 </html>
